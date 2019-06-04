@@ -2524,8 +2524,8 @@ Finished:
     WCG(orig_##func) = NULL;\
     orig = zend_hash_str_find_ptr(CG(function_table), #func, sizeof(#func)-1); \
     if (orig && orig->type == ZEND_INTERNAL_FUNCTION) { \
-    WCG(orig_##func) = orig->internal_function.handler; \
-    orig->internal_function.handler = wincache_##func; \
+    WCG(orig_##func) = (void (__cdecl *)(zend_execute_data *,zval *)) orig->internal_function.handler; \
+    orig->internal_function.handler = (zif_handler) wincache_##func; \
     }
 
 void wincache_intercept_functions_init()
@@ -2544,7 +2544,7 @@ void wincache_intercept_functions_init()
     WINCACHE_INTERCEPT(readfile);
     WINCACHE_INTERCEPT(realpath);
     WINCACHE_INTERCEPT(unlink);
-    WINCACHE_INTERCEPT(rename);
+    WINCACHE_INTERCEPT(rename); 
     dprintverbose("wincache_intercept_functions_init called");
 }
 /* }}} */
@@ -2552,7 +2552,7 @@ void wincache_intercept_functions_init()
 /* {{{ void wincache_intercept_functions_shutdown() */
 #define WINCACHE_RELEASE(func) \
     if (WCG(orig_##func) && NULL != (orig = zend_hash_str_find_ptr(CG(function_table), #func, sizeof(#func)-1))) { \
-        orig->internal_function.handler = WCG(orig_##func); \
+        orig->internal_function.handler = (zif_handler) WCG(orig_##func); \
     } \
     WCG(orig_##func) = NULL;
 
