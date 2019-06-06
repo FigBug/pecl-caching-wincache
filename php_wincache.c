@@ -32,6 +32,7 @@
    +----------------------------------------------------------------------------------------------+
 */
 
+
 #include "precomp.h"
 
 #define NAMESALT_LENGTH_MAXIMUM     8
@@ -881,7 +882,7 @@ PHP_MINFO_FUNCTION(wincache)
     return;
 }
 
-zend_string * wincache_resolve_path(const char * filename, int filename_len)
+zend_string * wincache_resolve_path(const char * filename, size_t filename_len)
 {
     int            result       = NONFATAL;
     char *         res_path_str = NULL;

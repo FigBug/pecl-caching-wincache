@@ -128,7 +128,7 @@ ZEND_TSRMLS_CACHE_EXTERN();
 #define WCG(v) (wincache_globals.v)
 #endif
 
-typedef zend_string *(*fn_zend_resolve_path)(const char *filename, int filename_len);
+typedef zend_string *(*fn_zend_resolve_path)(const char *filename, size_t filename_len);
 typedef int (*fn_zend_stream_open_function)(const char * filename, zend_file_handle *handle);
 typedef zend_op_array * (*fn_zend_compile_file)(zend_file_handle *, int);
 typedef void (*fn_zend_error_cb)(int type, const char *error_filename, const uint error_lineno, const char *format, va_list args);
@@ -136,7 +136,7 @@ typedef void (*fn_zend_error_cb)(int type, const char *error_filename, const uin
 fn_zend_resolve_path original_resolve_path;
 fn_zend_stream_open_function original_stream_open_function;
 
-extern zend_string * wincache_resolve_path(const char * filename, int filename_len);
+extern zend_string * wincache_resolve_path(const char * filename, size_t filename_len);
 extern int wincache_stream_open_function(const char * filename, zend_file_handle * file_handle);
 
 extern void wincache_intercept_functions_init();
