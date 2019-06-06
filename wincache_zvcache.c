@@ -211,9 +211,8 @@ static int copyin_zval(zvcache_context * pcache, zvcopy_context * pcopy, HashTab
             break;
 
         case IS_STRING:
-#if 0
-	// Do we need to handle IS_CONSTANT_AST 
-        case IS_CONSTANT:
+  	    // Do we need to handle IS_CONSTANT_AST 
+        // case IS_CONSTANT:
             result = copyin_string(pcopy, phtable, Z_STR_P(poriginal), &pzstr);
             if (FAILED(result))
             {
@@ -222,15 +221,12 @@ static int copyin_zval(zvcache_context * pcache, zvcopy_context * pcopy, HashTab
 
             /* Fix up the zval type flags */
             if (Z_TYPE_P(poriginal) == IS_STRING) {
-                Z_TYPE_FLAGS_P(pnewzv) |= (IS_TYPE_REFCOUNTED | IS_TYPE_COPYABLE);
-            } else {
-                Z_TYPE_FLAGS_P(pnewzv) |= (IS_TYPE_CONSTANT | IS_TYPE_REFCOUNTED | IS_TYPE_COPYABLE);
+                Z_TYPE_FLAGS_P(pnewzv) |= (IS_TYPE_REFCOUNTED);
             }
 
             /* Use offset in cached zval pointer */
             Z_STR_P(pnewzv) = (zend_string *)ZOFFSET(pcopy, pzstr);
             break;
-#endif	
         case IS_ARRAY:
             /* Initialize zvcopied hashtable for direct call to copyin_zval */
             if(phtable == NULL)
